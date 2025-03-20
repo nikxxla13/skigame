@@ -6,12 +6,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float acceleration = 100, turnspeed = 100, miniSpeed = 0, maxSpeed = 500, minAcceleration = 100, maxAcceleration = 200;
     private float speed = 0;
     private Rigidbody rb;
+    private Animator animator;
     [SerializeField] private LayerMask groundLayers;
     [SerializeField] private Transform groundTransform;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
     private void FixedUpdate()
        {
@@ -19,6 +21,7 @@ public class PlayerController : MonoBehaviour
            acceleration = Remap(0, 90, maxAcceleration, minAcceleration, angle);
             speed += acceleration * Time.fixedDeltaTime;
             speed = Mathf.Clamp(speed, miniSpeed, maxSpeed);
+            animator.SetFloat("playerSpeed", speed);
             Vector3 velocity = transform.forward * speed*Time.fixedDeltaTime;
             rb.velocity = new Vector3(velocity.x, rb.velocity.y, velocity.z);
        }
